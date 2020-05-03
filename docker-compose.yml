@@ -1,0 +1,9 @@
+version: '3.4'
+
+services:
+  asample.netcore.identity.api:
+    image: ${DOCKER_REGISTRY-}asamplenetcoreidentityapi
+    build:
+      context: .
+      dockerfile: src/Services/Identity/ASample.NetCore.Identity.Api/Dockerfile
+       

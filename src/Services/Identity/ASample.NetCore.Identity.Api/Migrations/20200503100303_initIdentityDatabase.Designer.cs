@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ASample.NetCore.Identity.Api.Migrations
 {
     [DbContext(typeof(IdentityApiContext))]
-    [Migration("20191203135445_update_RoleMenuItem")]
-    partial class update_RoleMenuItem
+    [Migration("20200503100303_initIdentityDatabase")]
+    partial class initIdentityDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,46 +20,6 @@ namespace ASample.NetCore.Identity.Api.Migrations
                 .HasAnnotation("ProductVersion", "3.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("ASample.NetCore.Identity.Api.Domain.Member", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Avatar")
-                        .HasColumnType("nvarchar(500)")
-                        .HasMaxLength(500);
-
-                    b.Property<DateTime>("CreateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeleteTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Gender")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("ModifyTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("NickName")
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.Property<int>("Role")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Member");
-                });
 
             modelBuilder.Entity("ASample.NetCore.Identity.Api.Domain.Menu", b =>
                 {
@@ -108,7 +68,7 @@ namespace ASample.NetCore.Identity.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("IdentityMenu");
+                    b.ToTable("ums_identity_menu");
                 });
 
             modelBuilder.Entity("ASample.NetCore.Identity.Api.Domain.Ms", b =>
@@ -142,7 +102,7 @@ namespace ASample.NetCore.Identity.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("IdentityMs");
+                    b.ToTable("ums_identity_ms");
                 });
 
             modelBuilder.Entity("ASample.NetCore.Identity.Api.Domain.MsMenuItem", b =>
@@ -162,7 +122,7 @@ namespace ASample.NetCore.Identity.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("IdentityMsMenuItem");
+                    b.ToTable("ums_identity_ms_menu_relation");
                 });
 
             modelBuilder.Entity("ASample.NetCore.Identity.Api.Domain.RefreshToken", b =>
@@ -195,7 +155,7 @@ namespace ASample.NetCore.Identity.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RefreshToken");
+                    b.ToTable("ums_refresh_token");
                 });
 
             modelBuilder.Entity("ASample.NetCore.Identity.Api.Domain.Role", b =>
@@ -243,7 +203,7 @@ namespace ASample.NetCore.Identity.Api.Migrations
                         .HasName("RoleNameIndex")
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
-                    b.ToTable("IdentityRole");
+                    b.ToTable("ums_identity_role");
                 });
 
             modelBuilder.Entity("ASample.NetCore.Identity.Api.Domain.RoleClaim", b =>
@@ -271,56 +231,27 @@ namespace ASample.NetCore.Identity.Api.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("IdentityRoleClaim");
+                    b.ToTable("ums_identity_role_claim");
                 });
 
-            modelBuilder.Entity("ASample.NetCore.Identity.Api.Domain.StaffInfo", b =>
+            modelBuilder.Entity("ASample.NetCore.Identity.Api.Domain.RoleMenuItem", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Avatar")
-                        .HasColumnType("nvarchar(500)")
-                        .HasMaxLength(500);
-
                     b.Property<DateTime>("CreateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("DeleteTime")
-                        .HasColumnType("datetime2");
+                    b.Property<Guid>("MenuId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.Property<int>("Gender")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("ModifyTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("NickName")
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("Phone")
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.Property<Guid>("UserId")
+                    b.Property<Guid>("RoleId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.ToTable("StaffInfo");
+                    b.ToTable("ums_identity_role_menu_relation");
                 });
 
             modelBuilder.Entity("ASample.NetCore.Identity.Api.Domain.User", b =>
@@ -427,7 +358,7 @@ namespace ASample.NetCore.Identity.Api.Migrations
                         .HasName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.ToTable("IdentityUser");
+                    b.ToTable("ums_identity_user");
                 });
 
             modelBuilder.Entity("ASample.NetCore.Identity.Api.Domain.UserClaim", b =>
@@ -455,7 +386,7 @@ namespace ASample.NetCore.Identity.Api.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("IdentityUserClaim");
+                    b.ToTable("ums_identity_user_claim");
                 });
 
             modelBuilder.Entity("ASample.NetCore.Identity.Api.Domain.UserLogin", b =>
@@ -503,52 +434,7 @@ namespace ASample.NetCore.Identity.Api.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("IdentityUserLogin");
-                });
-
-            modelBuilder.Entity("ASample.NetCore.Identity.Api.Domain.UserPlatformItem", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Avatar")
-                        .HasColumnType("nvarchar(500)")
-                        .HasMaxLength(500);
-
-                    b.Property<DateTime>("CreateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeleteTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("ModifyTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("NickName")
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.Property<Guid>("PlatformId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("PlatformToken")
-                        .HasColumnType("nvarchar(500)")
-                        .HasMaxLength(500);
-
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("UserPlatformItem");
+                    b.ToTable("ums_identity_user_login");
                 });
 
             modelBuilder.Entity("ASample.NetCore.Identity.Api.Domain.UserRoleItem", b =>
@@ -572,7 +458,7 @@ namespace ASample.NetCore.Identity.Api.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("IdentityUserRole");
+                    b.ToTable("ums_identity_user_role");
                 });
 
             modelBuilder.Entity("ASample.NetCore.Identity.Api.Domain.UserToken", b =>
@@ -609,7 +495,7 @@ namespace ASample.NetCore.Identity.Api.Migrations
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
-                    b.ToTable("IdentityUserToken");
+                    b.ToTable("ums_identity_user_token");
                 });
 
             modelBuilder.Entity("ASample.NetCore.Identity.Api.Domain.RoleClaim", b =>

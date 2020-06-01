@@ -27,8 +27,8 @@ namespace ASample.NetCore.FileStorage.Api.Repositories
             {
 
                 var fileName = $"{file.FileName}";//{Path.GetExtension(file.FileName)}
-                var relativePath = $@"images\{ DateTime.Now.Date.ToString("yyyyMMdd")}\{ fileName}";
-                var path = $@"{webRootPath}\{relativePath}";
+                var relativePath = $@"images/{ DateTime.Now.Date:yyyyMMdd}/{ fileName}";
+                var path = $@"{webRootPath}/{relativePath}";
                 var fileInfo = new FileInfo(path);
                 var di = fileInfo.Directory;
                 if (!di.Exists)
@@ -43,10 +43,10 @@ namespace ASample.NetCore.FileStorage.Api.Repositories
                     fs.Flush();
                 }
                 var request = _httpContextAccessor.HttpContext.Request;
-                var savedFilePath = $@"{request.Scheme}:\\{request.Host}\{relativePath}";
+                var savedFilePath = $@"{request.Scheme}://{request.Host}/{relativePath}";
                 var fileDto = new FileDto
                 {
-                    Host = $@"{request.Scheme}:\\{request.Host}\",
+                    Host = $@"{request.Scheme}://{request.Host}/",
                     Dir = relativePath,
                     FileFullPath = savedFilePath,
                     //AccessKeyId 
@@ -70,7 +70,7 @@ namespace ASample.NetCore.FileStorage.Api.Repositories
                 foreach (var file in files)
                 {
                     var fileName = $"{Guid.NewGuid().ToString()}{Path.GetExtension(file.FileName)}";
-                    var path = $@"{webRootPath}\{fileName}";
+                    var path = $@"{webRootPath}/{fileName}";
 
                     using (FileStream fs = File.Create(path))
                     {
@@ -78,7 +78,7 @@ namespace ASample.NetCore.FileStorage.Api.Repositories
                         fs.Flush();
                     }
                     var request = _httpContextAccessor.HttpContext.Request;
-                    var savedFilePath = $@"{request.Scheme}:\\{request.Host}\{fileName}";
+                    var savedFilePath = $@"{request.Scheme}://{request.Host}/{fileName}";
                     filePathList.Add(savedFilePath);
                 }
 
@@ -99,7 +99,7 @@ namespace ASample.NetCore.FileStorage.Api.Repositories
             {
                 Uri uri = new Uri(link);
                 var fileName = uri.Segments.Last();
-                string fullPath = $@"{webRootPath}\{fileName}";
+                string fullPath = $@"{webRootPath}/{fileName}";
 
                 if (File.Exists(fullPath))
                 {

@@ -27,7 +27,8 @@ namespace ASample.NetCore.Extension
                         var value = sourcePro.GetValue(tsource, null);
                         if (resultPro.PropertyType == typeof(DateTime) || resultPro.PropertyType == typeof(Nullable<DateTime>))
                         {
-                            value = Convert.ToDateTime(value.ToString());
+                            if(value != null)
+                                value = Convert.ToDateTime(value.ToString());
                         }
                         //if ((sourcePro.PropertyType == typeof(DateTime) || sourcePro.PropertyType == typeof(Nullable<DateTime>)))
                         //{

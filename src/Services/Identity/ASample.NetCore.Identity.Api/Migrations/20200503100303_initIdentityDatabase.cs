@@ -3,12 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ASample.NetCore.Identity.Api.Migrations
 {
-    public partial class updatedatabasemsid : Migration
+    public partial class initIdentityDatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "IdentityMenu",
+                name: "ums_identity_menu",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
@@ -27,11 +27,11 @@ namespace ASample.NetCore.Identity.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_IdentityMenu", x => x.Id);
+                    table.PrimaryKey("PK_ums_identity_menu", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "IdentityMs",
+                name: "ums_identity_ms",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
@@ -45,11 +45,11 @@ namespace ASample.NetCore.Identity.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_IdentityMs", x => x.Id);
+                    table.PrimaryKey("PK_ums_identity_ms", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "IdentityMsMenuItem",
+                name: "ums_identity_ms_menu_relation",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
@@ -59,18 +59,18 @@ namespace ASample.NetCore.Identity.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_IdentityMsMenuItem", x => x.Id);
+                    table.PrimaryKey("PK_ums_identity_ms_menu_relation", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "IdentityRole",
+                name: "ums_identity_role",
                 columns: table => new
                 {
-                    MsId = table.Column<Guid>(nullable: false),
                     Id = table.Column<Guid>(nullable: false),
                     Name = table.Column<string>(maxLength: 50, nullable: true),
                     NormalizedName = table.Column<string>(maxLength: 50, nullable: true),
                     ConcurrencyStamp = table.Column<string>(maxLength: 500, nullable: true),
+                    MsId = table.Column<Guid>(nullable: false),
                     Description = table.Column<string>(maxLength: 500, nullable: true),
                     IsDeleted = table.Column<bool>(nullable: false),
                     CreateTime = table.Column<DateTime>(nullable: false),
@@ -79,15 +79,27 @@ namespace ASample.NetCore.Identity.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_IdentityRole", x => x.MsId);
-                    table.UniqueConstraint("AK_IdentityRole_Id", x => x.Id);
+                    table.PrimaryKey("PK_ums_identity_role", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "IdentityUser",
+                name: "ums_identity_role_menu_relation",
                 columns: table => new
                 {
-                    MsId = table.Column<Guid>(nullable: false),
+                    Id = table.Column<Guid>(nullable: false),
+                    CreateTime = table.Column<DateTime>(nullable: false),
+                    RoleId = table.Column<Guid>(nullable: false),
+                    MenuId = table.Column<Guid>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ums_identity_role_menu_relation", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ums_identity_user",
+                columns: table => new
+                {
                     Id = table.Column<Guid>(nullable: false),
                     UserName = table.Column<string>(maxLength: 50, nullable: true),
                     NormalizedUserName = table.Column<string>(maxLength: 50, nullable: true),
@@ -103,10 +115,13 @@ namespace ASample.NetCore.Identity.Api.Migrations
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
+                    MsId = table.Column<Guid>(nullable: true),
                     LastLoginTime = table.Column<DateTime>(nullable: true),
                     LastLoginIp = table.Column<string>(maxLength: 50, nullable: true),
                     LoginTimes = table.Column<int>(nullable: false),
                     UserType = table.Column<int>(nullable: false),
+                    UserAvatar = table.Column<string>(nullable: true),
+                    UserStatus = table.Column<bool>(nullable: false),
                     UserSource = table.Column<int>(nullable: false),
                     CreateTime = table.Column<DateTime>(nullable: false),
                     DeleteTime = table.Column<DateTime>(nullable: true),
@@ -115,32 +130,11 @@ namespace ASample.NetCore.Identity.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_IdentityUser", x => x.MsId);
-                    table.UniqueConstraint("AK_IdentityUser_Id", x => x.Id);
+                    table.PrimaryKey("PK_ums_identity_user", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Member",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    IsDeleted = table.Column<bool>(nullable: false),
-                    DeleteTime = table.Column<DateTime>(nullable: true),
-                    CreateTime = table.Column<DateTime>(nullable: false),
-                    ModifyTime = table.Column<DateTime>(nullable: true),
-                    UserId = table.Column<Guid>(nullable: false),
-                    NickName = table.Column<string>(maxLength: 50, nullable: true),
-                    Avatar = table.Column<string>(maxLength: 500, nullable: true),
-                    Gender = table.Column<int>(nullable: false),
-                    Role = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Member", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "RefreshToken",
+                name: "ums_refresh_token",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
@@ -154,54 +148,11 @@ namespace ASample.NetCore.Identity.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RefreshToken", x => x.Id);
+                    table.PrimaryKey("PK_ums_refresh_token", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "StaffInfo",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    IsDeleted = table.Column<bool>(nullable: false),
-                    DeleteTime = table.Column<DateTime>(nullable: true),
-                    CreateTime = table.Column<DateTime>(nullable: false),
-                    ModifyTime = table.Column<DateTime>(nullable: true),
-                    UserId = table.Column<Guid>(nullable: false),
-                    Email = table.Column<string>(maxLength: 50, nullable: true),
-                    Phone = table.Column<string>(maxLength: 50, nullable: true),
-                    Name = table.Column<string>(maxLength: 50, nullable: true),
-                    NickName = table.Column<string>(maxLength: 50, nullable: true),
-                    Avatar = table.Column<string>(maxLength: 500, nullable: true),
-                    Gender = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_StaffInfo", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "UserPlatformItem",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    IsDeleted = table.Column<bool>(nullable: false),
-                    DeleteTime = table.Column<DateTime>(nullable: true),
-                    CreateTime = table.Column<DateTime>(nullable: false),
-                    ModifyTime = table.Column<DateTime>(nullable: true),
-                    UserId = table.Column<Guid>(nullable: false),
-                    PlatformId = table.Column<Guid>(maxLength: 50, nullable: false),
-                    PlatformToken = table.Column<string>(maxLength: 500, nullable: true),
-                    Type = table.Column<int>(nullable: false),
-                    NickName = table.Column<string>(maxLength: 50, nullable: true),
-                    Avatar = table.Column<string>(maxLength: 500, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserPlatformItem", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "IdentityRoleClaim",
+                name: "ums_identity_role_claim",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -213,17 +164,17 @@ namespace ASample.NetCore.Identity.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_IdentityRoleClaim", x => x.Id);
+                    table.PrimaryKey("PK_ums_identity_role_claim", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_IdentityRoleClaim_IdentityRole_RoleId",
+                        name: "FK_ums_identity_role_claim_ums_identity_role_RoleId",
                         column: x => x.RoleId,
-                        principalTable: "IdentityRole",
-                        principalColumn: "MsId",
+                        principalTable: "ums_identity_role",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "IdentityUserClaim",
+                name: "ums_identity_user_claim",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -235,38 +186,44 @@ namespace ASample.NetCore.Identity.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_IdentityUserClaim", x => x.Id);
+                    table.PrimaryKey("PK_ums_identity_user_claim", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_IdentityUserClaim_IdentityUser_UserId",
+                        name: "FK_ums_identity_user_claim_ums_identity_user_UserId",
                         column: x => x.UserId,
-                        principalTable: "IdentityUser",
-                        principalColumn: "MsId",
+                        principalTable: "ums_identity_user",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "IdentityUserLogin",
+                name: "ums_identity_user_login",
                 columns: table => new
                 {
+                    Id = table.Column<Guid>(nullable: false),
                     LoginProvider = table.Column<string>(maxLength: 50, nullable: false),
                     ProviderKey = table.Column<string>(maxLength: 500, nullable: false),
                     ProviderDisplayName = table.Column<string>(maxLength: 500, nullable: true),
                     UserId = table.Column<Guid>(nullable: false),
-                    CreateTime = table.Column<DateTime>(nullable: false)
+                    CreateTime = table.Column<DateTime>(nullable: false),
+                    ModifyTime = table.Column<DateTime>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    DeleteTime = table.Column<DateTime>(nullable: true),
+                    LoginIp = table.Column<string>(maxLength: 50, nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_IdentityUserLogin", x => new { x.LoginProvider, x.ProviderKey });
+                    table.PrimaryKey("PK_ums_identity_user_login", x => x.Id);
+                    table.UniqueConstraint("AK_ums_identity_user_login_LoginProvider_ProviderKey", x => new { x.LoginProvider, x.ProviderKey });
                     table.ForeignKey(
-                        name: "FK_IdentityUserLogin_IdentityUser_UserId",
+                        name: "FK_ums_identity_user_login_ums_identity_user_UserId",
                         column: x => x.UserId,
-                        principalTable: "IdentityUser",
-                        principalColumn: "MsId",
+                        principalTable: "ums_identity_user",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "IdentityUserRole",
+                name: "ums_identity_user_role",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
@@ -276,24 +233,24 @@ namespace ASample.NetCore.Identity.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_IdentityUserRole", x => x.Id);
-                    table.UniqueConstraint("AK_IdentityUserRole_UserId_RoleId", x => new { x.UserId, x.RoleId });
+                    table.PrimaryKey("PK_ums_identity_user_role", x => x.Id);
+                    table.UniqueConstraint("AK_ums_identity_user_role_UserId_RoleId", x => new { x.UserId, x.RoleId });
                     table.ForeignKey(
-                        name: "FK_IdentityUserRole_IdentityRole_RoleId",
+                        name: "FK_ums_identity_user_role_ums_identity_role_RoleId",
                         column: x => x.RoleId,
-                        principalTable: "IdentityRole",
-                        principalColumn: "MsId",
+                        principalTable: "ums_identity_role",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_IdentityUserRole_IdentityUser_UserId",
+                        name: "FK_ums_identity_user_role_ums_identity_user_UserId",
                         column: x => x.UserId,
-                        principalTable: "IdentityUser",
-                        principalColumn: "MsId",
+                        principalTable: "ums_identity_user",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "IdentityUserToken",
+                name: "ums_identity_user_token",
                 columns: table => new
                 {
                     UserId = table.Column<Guid>(nullable: false),
@@ -308,98 +265,92 @@ namespace ASample.NetCore.Identity.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_IdentityUserToken", x => new { x.UserId, x.LoginProvider, x.Name });
+                    table.PrimaryKey("PK_ums_identity_user_token", x => new { x.UserId, x.LoginProvider, x.Name });
                     table.ForeignKey(
-                        name: "FK_IdentityUserToken_IdentityUser_UserId",
+                        name: "FK_ums_identity_user_token_ums_identity_user_UserId",
                         column: x => x.UserId,
-                        principalTable: "IdentityUser",
-                        principalColumn: "MsId",
+                        principalTable: "ums_identity_user",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
                 name: "RoleNameIndex",
-                table: "IdentityRole",
+                table: "ums_identity_role",
                 column: "NormalizedName",
                 unique: true,
                 filter: "[NormalizedName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_IdentityRoleClaim_RoleId",
-                table: "IdentityRoleClaim",
+                name: "IX_ums_identity_role_claim_RoleId",
+                table: "ums_identity_role_claim",
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
                 name: "EmailIndex",
-                table: "IdentityUser",
+                table: "ums_identity_user",
                 column: "NormalizedEmail");
 
             migrationBuilder.CreateIndex(
                 name: "UserNameIndex",
-                table: "IdentityUser",
+                table: "ums_identity_user",
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_IdentityUserClaim_UserId",
-                table: "IdentityUserClaim",
+                name: "IX_ums_identity_user_claim_UserId",
+                table: "ums_identity_user_claim",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_IdentityUserLogin_UserId",
-                table: "IdentityUserLogin",
+                name: "IX_ums_identity_user_login_UserId",
+                table: "ums_identity_user_login",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_IdentityUserRole_RoleId",
-                table: "IdentityUserRole",
+                name: "IX_ums_identity_user_role_RoleId",
+                table: "ums_identity_user_role",
                 column: "RoleId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "IdentityMenu");
+                name: "ums_identity_menu");
 
             migrationBuilder.DropTable(
-                name: "IdentityMs");
+                name: "ums_identity_ms");
 
             migrationBuilder.DropTable(
-                name: "IdentityMsMenuItem");
+                name: "ums_identity_ms_menu_relation");
 
             migrationBuilder.DropTable(
-                name: "IdentityRoleClaim");
+                name: "ums_identity_role_claim");
 
             migrationBuilder.DropTable(
-                name: "IdentityUserClaim");
+                name: "ums_identity_role_menu_relation");
 
             migrationBuilder.DropTable(
-                name: "IdentityUserLogin");
+                name: "ums_identity_user_claim");
 
             migrationBuilder.DropTable(
-                name: "IdentityUserRole");
+                name: "ums_identity_user_login");
 
             migrationBuilder.DropTable(
-                name: "IdentityUserToken");
+                name: "ums_identity_user_role");
 
             migrationBuilder.DropTable(
-                name: "Member");
+                name: "ums_identity_user_token");
 
             migrationBuilder.DropTable(
-                name: "RefreshToken");
+                name: "ums_refresh_token");
 
             migrationBuilder.DropTable(
-                name: "StaffInfo");
+                name: "ums_identity_role");
 
             migrationBuilder.DropTable(
-                name: "UserPlatformItem");
-
-            migrationBuilder.DropTable(
-                name: "IdentityRole");
-
-            migrationBuilder.DropTable(
-                name: "IdentityUser");
+                name: "ums_identity_user");
         }
     }
 }

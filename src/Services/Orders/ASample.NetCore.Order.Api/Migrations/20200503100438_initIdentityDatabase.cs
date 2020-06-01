@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace ASample.NetCore.Identity.Api.Migrations
+namespace ASample.NetCore.Order.Api.Migrations
 {
-    public partial class update_RoleMenuItem : Migration
+    public partial class initIdentityDatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
